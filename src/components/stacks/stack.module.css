@@ -1,0 +1,216 @@
+.container {
+  margin-bottom: 0;
+  margin-top: 0;
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+
+}
+
+.grid {
+  width: 100%;
+  display: grid;
+  grid-gap: 15px;
+  gap: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 336px);
+}
+
+.cardsWrapper {
+  display: flex;
+  height: 454px;
+  margin: 0 auto;
+  position: relative;
+  width: calc(100% - 226px);
+}
+
+.cardsWrapper {
+  height: 1200px;
+}
+
+.item {
+  height: 454px;
+  max-width: 400px;
+  position: relative;
+  /* transition: opacity 700ms cubic-bezier(0.19, 1, 0.22, 1) 0ms; */
+  flex: 1;
+  will-change: transform;
+}
+
+.card {
+  height: 100%;
+  left: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card .overlay {
+  position: absolute;
+  height: 100%;
+  width: calc(100% + 226px);
+  left: -113px;
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  display: flex;
+  align-items: center;
+}
+
+.card .wrapper {
+  position: absolute;
+  height: 454px;
+  width:100%;
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  display: flex;
+  align-items: center;
+}
+
+
+.card .overlay[data-align="right"] {
+  border-style: solid;
+  border-right-width:var(--borderWidth);
+  border-color: black;
+}
+
+.card .overlay[data-align="left"] {
+  border-style: solid;
+  border-left-width: var(--borderWidth);
+  border-color: black;
+}
+.card.active .overlay {
+  border-style: solid;
+  border-left-width: var(--borderWidth);
+  border-right-width: var(--borderWidth);
+  border-color: black;
+}
+
+.flex {
+  box-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.section {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media screen and (min-width: 841px) {
+  .section {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    width: calc(100% - 40px * 2);
+  }
+}
+.flexMax {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.absolute {
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.left {
+  transform: translate3d(-113px, 0, 0);
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.right {
+  transform: translate3d(113px, 0, 0);
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.outer,
+.active ~ .card .inner {
+  -webkit-transform: translate3d(-113px, 0, 0);
+  transform: translate3d(-113px, 0, 0);
+}
+
+.inner,
+.active ~ .card .outer {
+  -webkit-transform: translate3d(113px, 0, 0);
+  transform: translate3d(113px, 0, 0);
+}
+
+.card.active .absolute {
+  -webkit-transform: none;
+  transform: none;
+}
+.card .absolute {
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card.active .crop {
+  transform: scale(1.2);
+  transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.crop {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  min-height: 336px;
+  overflow: hidden;
+}
+
+.bg {
+  background-color: rgba(189, 189, 189, 0.3);
+  -webkit-background-size: cover;
+  background-size: cover;
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition-delay: 1000ms;
+  transition: transform 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.hero {
+  box-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  width: 100%;
+  height: 454px;
+  position: relative;
+}
+
+.main {
+  box-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: calc(100vh - 80px);
+  position: relative;
+  transition: background-color 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+}

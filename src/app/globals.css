@@ -2,26 +2,167 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
+} */
+
+@layer base {
+  *{
+    user-select: none;
+  }
+  :root {
+  --navHeight:80px
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  body {
+    color: rgb(var(--foreground-rgb));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "liga" on, "clig" on, "dlig" off;
+    text-rendering: optimizeSpeed;
+    @apply min-h-screen overflow-x-hidden;
+  }
+  button {
+    display: inline-block;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .noise {
+    background-image: url(/noise.png);
+    position: fixed;
+    inset: 0;
+    mix-blend-mode: hard-light;
+    pointer-events: none;
+    filter: brightness(2.5);
+  }
+
+  .vertical {
+    writing-mode: vertical-rl;
+    transform: rotateZ(180deg);
+  }
+
+  .grid-screen {
+    --min-width: calc(100vw - var(--navHeight));
+     width:var(--min-width)
+  }
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 0.5fr) [content-start] 1fr [content-2] 24.4% [content-3] 1fr [content-end] repeat(
+        2,
+        0.5fr
+      );
+    align-items: stretch;
+  }
+
+  .grid-layout.project {
+    grid-auto-rows: minmax(40px, auto);
+  }
+
+  .grid-layout.nav,
+  .grid-layout.project {
+    grid-auto-rows: minmax(40px, auto);
+  }
+  .grid-card {
+    grid-column: auto/span var(--col);
+    grid-row: auto/span var(--row);
+  }
+
+  .grid-card.languages {
+    grid-column: content-start / span 1;
+    grid-row: 1 / span 1;
+  }
+  .grid-card.frameworks {
+    grid-column: content-2 / span 2;
+    grid-row: 1 / span 2;
+  }
+  .grid-card.state {
+    grid-column: content-start / span 1;
+    grid-row: 2 / span 1;
+  }
+  .grid-card.animations {
+    grid-column: content-start / span 2;
+    grid-row: 3 / span 1;
+  }
+  .grid-card.databases {
+    grid-column: content-3 / span 1;
+    grid-row: 3 / span 1;
+  }
+  .grid-card.server {
+    grid-column: content-start / span 1;
+    grid-row: 4 / span 1;
+  }
+  .grid-card.developertools {
+    grid-column: content-2 / span 2;
+    grid-row: 4 / span 1;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .grid-layout {
+      grid-template-columns: repeat(1, 0.5fr) [content-start] 1fr [content-2] 24.4% [content-3] 1fr [content-end] repeat(
+          1,
+          0.5fr
+        );
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    /* .grid-layout {
+      grid-template-columns: [content-start] 1fr [content-end];
+      grid-auto-rows: minmax(100px, auto);
+    }
+
+    .grid-layout .grid-card {
+      grid-column: content-start;
+      grid-row: auto;
+    } */
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.23);
+    backdrop-filter: blur(8.5px);
+    -webkit-backdrop-filter: blur(8.5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .absolute-fill {
+    content: "";
+    @apply absolute top-0 left-0 right-0 bottom-0;
+  }
+
+  .line {
+    @apply border-solid border-[0.5px] border-line border-opacity-[1];
+  }
+
+  .h2 {
+    @apply leading-[1.031] tracking-[-.04em] text-[1.5rem] font-bold;
+  }
+
+  .h3 {
+    @apply leading-[1.031] tracking-[-.04em] text-[1.25rem] font-bold;
+  }
+
+  .body-3 {
+    @apply leading-[1.62] md:leading-[1.56]  lg:leading-[1.5] tracking-[-.04em] text-[1.25rem]  font-medium;
+  }
+
+  .detail-layout {
+    @apply px-[100px] flex items-center line;
+  }
+  .detail-text-img {
+  }
+
+  .detail-text-img .text {
+    @apply mr-[30px]  font-semibold leading-[1.01] tracking-[-.04em] text-[0.875rem] w-[calc(var(--column-width)*5)] max-w-[240px] md:max-w-[none];
+  }
 }
