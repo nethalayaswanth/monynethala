@@ -6,7 +6,7 @@ import useBreakpoints from "@/hooks/useBreakPoint";
 import useCursor from "@/hooks/useCursorMove";
 import useIsomorphicLayoutEffect from "@/hooks/useIsomorphicLayout";
 import { generateRandomHsv, mergeRefs } from "@/utils";
-import { transform, useAnimate, stagger } from "framer-motion";
+import { stagger, transform, useAnimate } from "framer-motion";
 
 const breakpoints = {
   sm: 480,
@@ -64,22 +64,24 @@ const Grid = ({ children }: { children: ReactNode }) => {
   }>({ first: null, second: null });
 
   const handleScroll = useCallback(() => {
-    if (!grids.current.first || !main.current) return;
-    const y = window.scrollY;
+    const container = main.current;
+    const firstgrid = grids.current.first;
+    if (!firstgrid || !container) return;
+    const y = container.scrollTop;
 
-    const gridHeight = grids.current.first.clientHeight;
-    const mainHeight = main.current.scrollHeight;
+    const gridHeight = firstgrid.clientHeight;
+    const mainHeight = container.scrollHeight;
 
     if (!disabled.current && gridHeight + y >= mainHeight) {
-      window.scrollTo({ top: 1 });
-
+      // window.scrollTo({ top: 1 });
+      container.scrollTop = 1;
       disabled.current = true;
     } else if (y <= 0 && !disabled.current) {
       console.log(mainHeight, gridHeight);
-
-      window.scrollTo({
-        top: mainHeight - 1 - gridHeight,
-      });
+      container.scrollTop = mainHeight - 1 - gridHeight;
+      // window.scrollTo({
+      //   top: mainHeight - 1 - gridHeight,
+      // });
       disabled.current = true;
     }
     if (disabled.current) {
@@ -89,12 +91,14 @@ const Grid = ({ children }: { children: ReactNode }) => {
     }
 
     const animate = () => {
-      const y = window.scrollY;
-      const { clientHeight: height, clientWidth: width } =
-        document.documentElement;
+      const container = main.current;
+
+      if (!container) return;
+      const y = container.scrollTop;
+      const { clientHeight: height, clientWidth: width } = container;
       Object.values(grids.current).forEach((grid, index) => {
         if (!grid) return;
-     
+
         grid.style.perspective = `1000px`;
         grid.style.perspectiveOrigin = `50% ${
           height / 2 + y - grid.offsetTop
@@ -106,7 +110,7 @@ const Grid = ({ children }: { children: ReactNode }) => {
         const top = node.getBoundingClientRect().top;
 
         if (top <= height && top >= -node.clientHeight) {
-          const scale = transform([-node.clientHeight, height], [1,0.7])(top);
+          const scale = transform([-node.clientHeight, height], [1, 0.7])(top);
           const rotate = transform(
             [-node.clientHeight, height],
             [-70, 70]
@@ -124,156 +128,143 @@ const Grid = ({ children }: { children: ReactNode }) => {
   const images = Children.toArray(children);
 
   useIsomorphicLayoutEffect(() => {
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const container = main.current;
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    if (!container) return;
+    handleScroll();
+    container.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
   const onMove = useCallback((translate: number) => {
     if (typeof window !== "undefined") {
-      window.scrollBy({ top: translate });
+      const container = main.current;
+
+      if (!container) return;
+      // window.scrollBy({ top: translate });
+      container.scrollTop = translate;
     }
   }, []);
 
   useCursor({ onMove });
-  const { ref, breakpoint } = useBreakpoints({breakpoints});
-
-
-  console.log(breakpoint)
+  const { ref, breakpoint } = useBreakpoints({ breakpoints });
 
   const [scope, animate] = useAnimate();
 
   useIsomorphicLayoutEffect(() => {
-    animate(
+
+    try{
+       animate(
       ".grid_item",
       { opacity: [0, 1] },
-      { delay: stagger(0.1,{from:"center"}), duration:1, type: "spring" }
+      { delay: stagger(0.1, { from: "center" }), duration: 1, type: "spring" }
     );
     animate(0, 200, {
       onUpdate: (latest) => {
-        const scrollBy=transform([0,100,200],[0,200,0])(latest)
-        window.scrollBy({
-          top: scrollBy,
-        });
+        const container = main.current;
+        if (!container) return;
+        const scrollBy = transform([0, 100, 200], [0, 200, 0])(latest);
+        // window.scrollBy({
+        //   top: scrollBy,
+        // });
+        container.scrollTop += scrollBy;
       },
       type: "spring",
       duration: 10,
-    });
+    })
+    }catch(e){
+      
+    }
+   
   }, []);
 
   return (
     <>
       <div
-        ref={mergeRefs(main, ref, scope)}
         id={"gallery"}
-        className={`w-full  flex   flex-col items-center relative min-h-[100vh]`}
+        ref={mergeRefs(main, ref, scope)}
+        className="w-full h-screen overflow-y-scroll"
       >
-        {images ? (
-          <>
-            <div
-              ref={(node) => {
-                if (node) {
-                  grids.current.first = node;
-                }
-              }}
-              className={`w-full grid px-[16px] `}
-              style={{
-                gridTemplateColumns: ` repeat(${rows[breakpoint].cols},1fr)`,
-                gridAutoRows: "minmax(180px,auto)",
-              }}
-            >
-              {images.map((image, index) => {
-                const [row, col] = getPosition(index, breakpoint);
+        <div
+          className={`w-full  flex   flex-col items-center relative min-h-[100vh]`}
+        >
+          {images ? (
+            <>
+              <div
+                ref={(node) => {
+                  if (node) {
+                    grids.current.first = node;
+                  }
+                }}
+                className={`w-full grid px-[16px] `}
+                style={{
+                  gridTemplateColumns: ` repeat(${rows[breakpoint].cols},1fr)`,
+                  gridAutoRows: "minmax(180px,auto)",
+                }}
+              >
+                {images.map((image, index) => {
+                  const [row, col] = getPosition(index, breakpoint);
 
-                return (
-                  <div
-                    key={`first-${index}`}
-                    ref={(node) => {
-                      if (node) {
-                        nodes.current.add(node);
-                      }
-                    }}
-                    className={" grid_item relative "}
-                    style={{
-                      backgroundColor: generateRandomHsv(),
-                      gridColumn: col,
-                      gridRow: row,
-                    }}
-                  >
-                    {image}
-                  </div>
-                );
-              })}
-            </div>
-            <div
-              ref={(node) => {
-                if (node) {
-                  grids.current.second = node;
-                }
-              }}
-              key={`second-grid`}
-              className={` w-full grid px-[16px] `}
-              style={{
-                gridTemplateColumns: ` repeat(${rows[breakpoint].cols},1fr)`,
-                gridAutoRows: "minmax(180px,auto)",
-              }}
-            >
-              {images.map((image, index) => {
-                const [row, col] = getPosition(index, breakpoint);
+                  return (
+                    <div
+                      key={`first-${index}`}
+                      ref={(node) => {
+                        if (node) {
+                          nodes.current.add(node);
+                        }
+                      }}
+                      className={" grid_item relative "}
+                      style={{
+                        backgroundColor: generateRandomHsv(),
+                        gridColumn: col,
+                        gridRow: row,
+                      }}
+                    >
+                      {image}
+                    </div>
+                  );
+                })}
+              </div>
+              <div
+                ref={(node) => {
+                  if (node) {
+                    grids.current.second = node;
+                  }
+                }}
+                key={`second-grid`}
+                className={` w-full grid px-[16px] `}
+                style={{
+                  gridTemplateColumns: ` repeat(${rows[breakpoint].cols},1fr)`,
+                  gridAutoRows: "minmax(180px,auto)",
+                }}
+              >
+                {images.map((image, index) => {
+                  const [row, col] = getPosition(index, breakpoint);
 
-                return (
-                  <div
-                    key={`second-${index}`}
-                    ref={(node) => {
-                      if (node) {
-                        nodes.current.add(node);
-                      }
-                    }}
-                    className={"grid_item relative "}
-                    style={{
-                      backgroundColor: generateRandomHsv(),
-                      gridColumn: col,
-                      gridRow: row,
-                    }}
-                  >
-                    {image}
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        ) : null}
-
-        {/* <input
-        type="file"
-        // ref={inputRef}
-        id="select"
-        onChange={uploadImages}
-        multiple
-        accept="image/*"
-        style={{
-          visibility: "hidden",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%,-50%)",
-        }}
-      /> */}
-        {/* <label
-        htmlFor="select"
-        style={{
-          visibility: "hidden",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%,-50%)",
-          border:'1px solid white',
-          padding:'16px'
-        }}
-      >
-        select
-      </label>  */}
+                  return (
+                    <div
+                      key={`second-${index}`}
+                      ref={(node) => {
+                        if (node) {
+                          nodes.current.add(node);
+                        }
+                      }}
+                      className={"grid_item relative "}
+                      style={{
+                        backgroundColor: generateRandomHsv(),
+                        gridColumn: col,
+                        gridRow: row,
+                      }}
+                    >
+                      {image}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : null}
+        </div>
       </div>
     </>
   );

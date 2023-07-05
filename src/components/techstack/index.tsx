@@ -1,6 +1,7 @@
 import { getContrastColor, getcolor } from "@/utils";
 import Badge from "../badge";
 import Card from "../card";
+import ScramblingText from "../text";
 import GridWrapper from "../wrapper/gridWrapper";
 
 type Chips = {
@@ -135,7 +136,7 @@ const fillers = { mobile: 0, tablet: 8, desktop: 16 };
 
 const TechStack = () => {
   return (
-    <GridWrapper fillers={fillers} id='techstack'>
+    <GridWrapper fillers={fillers} id="techstack">
       {stacks.map(({ title, data, name, dummy }, index) => {
         const accent = getcolor();
         return (
@@ -163,7 +164,9 @@ const TechStack = () => {
                             layoutId={title}
                             highlightcolor={getContrastColor(accent)}
                           >
-                            <div>{name}</div>
+                            <div>
+                              <ScramblingText text={name} />
+                            </div>
                           </Badge>
                         );
                       })}

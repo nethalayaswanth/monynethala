@@ -1,7 +1,10 @@
-"use client"
+"use client";
 
 import useIsomorphicLayoutEffect from "@/hooks/useIsomorphicLayout";
 import React, { useCallback, useRef, useState } from "react";
+import { BsFillPlayFill } from "react-icons/bs";
+import { userInteracted } from "../interactionDetector.js";
+
 type Props = {
   src: string;
 };
@@ -9,22 +12,69 @@ type Props = {
 const Video = ({ src }: Props) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [progress, setProgress] = useState(0);
-  const handlePlayVideo =useCallback (() =>{
-    if(videoRef.current){
- console.log("play");
-    videoRef.current.play()
-}},[]);
+  const [playing, setPlaying] = useState(false);
 
-useIsomorphicLayoutEffect(() => {
- 
-  handlePlayVideo();
-}, [handlePlayVideo]);
-  const onTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    if (isNaN(e.target.duration)) return;
-    setProgress((e.target.currentTime / e.target.duration) * 100);
+  const playVideo = useCallback(() => {
+    if (videoRef.current) {
+      setPlaying(true);
+      videoRef.current.play();
+    }
+  }, []);
+  const pauseVideo = useCallback(() => {
+    if (videoRef.current) {
+      console.log('pausing')
+      setPlaying(false);
+      videoRef.current.pause();
+    }
+  }, []);
+
+  const handlePlay = () => {
+    console.log('clcik')
+    if (videoRef.current) {
+      if (playing) {
+        pauseVideo();
+      } else {
+        playVideo();
+      }
+    }
   };
 
-  return <video src={src} loop={true} onTimeUpdate={onTimeUpdate} ref={videoRef} />;
+  useIsomorphicLayoutEffect(() => {
+    if (userInteracted) {
+      playVideo();
+    }
+    //  else {
+    //   pauseVideo();
+    // }
+  }, [pauseVideo]);
+  const onTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.target as HTMLVideoElement;
+    if (isNaN(video.duration)) return;
+    // setProgress((video.currentTime / video.duration) * 100);
+  };
+
+  return (
+    <div
+      onClick={handlePlay}
+      className="h-full w-full flex justify-center items-center relative"
+    >
+      {!playing ? (
+        <div className=" h-full w-full flex justify-center items-center z-999  absolute text-white cursor-not-allowed bg-[rgba(0,0,0,0.3)] ">
+          <BsFillPlayFill size={40} />
+        </div>
+      ) : null}
+
+      <div className="w-full h-full">
+        <video
+          src={src}
+          autoPlay={true}
+          loop={true}
+          onTimeUpdate={onTimeUpdate}
+          ref={videoRef}
+        />
+      </div>
+    </div>
+  );
 };
 
-export default Video
+export default Video;

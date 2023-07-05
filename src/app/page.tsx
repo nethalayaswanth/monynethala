@@ -7,6 +7,7 @@ import Cover from "@/components/page";
 import Projects from "@/components/projects";
 import Sticky from "@/components/sticky";
 import TechStack from "@/components/techstack";
+import Navigation from "@/components/navigation";
 
 export default function Home() {
   return (
@@ -17,10 +18,13 @@ export default function Home() {
       <Cover name="home" /> */}
       <Sticky showProgress={false}>
         <HashNavigation>
-          <NavBar absolute gridVisible={false} />
+          <NavBar absolute gridVisible={false}>
+            
+            <Navigation />
+          </NavBar>
           <Bio />
           {/* @ts-expect-error Async Server Component */}
-          {/* <Landing /> */}
+          <Landing />
           <Projects />
           <TechStack />
         </HashNavigation>

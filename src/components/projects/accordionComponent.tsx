@@ -2,6 +2,7 @@ import { useState } from "react";
 import GridWrapper from "../wrapper/gridWrapper";
 import ProjectCard from "./projectCard";
 import { projectsData } from "@/data/projects";
+import { LayoutGroup } from "framer-motion";
 
 const fillers = { mobile: 0, tablet: 2, desktop: 4 };
   const Accordion = () => {
@@ -11,7 +12,7 @@ const fillers = { mobile: 0, tablet: 2, desktop: 4 };
     <GridWrapper
       fillers={fillers}
       id="projects"
-      className={`min-w-[var(--width)] w-auto`}
+      className={`grid-screen min-w-[var(--min-width)] w-auto`}
     >
       <div
         style={{
@@ -20,25 +21,30 @@ const fillers = { mobile: 0, tablet: 2, desktop: 4 };
         }}
         className={` grid-card flex justify-stretch   text-base tracking-wide line border-0 border-l-[0.5px]`}
       >
-        {projectsData.map(
-          ({ name, description, github, image, video, demo, tags }, index) => (
-            <ProjectCard
-              key={index}
-              {...{
-                name,
-                active: active === index,
-                setActive,
-                index,
-                description,
-                github,
-                image,
-                video,
-                demo,
-                tags,
-              }}
-            />
-          )
-        )}
+        <LayoutGroup>
+          {projectsData.map(
+            (
+              { name, description, github, image, video, demo, tags },
+              index
+            ) => (
+              <ProjectCard
+                key={index}
+                {...{
+                  name,
+                  active: active === index,
+                  setActive,
+                  index,
+                  description,
+                  github,
+                  image,
+                  video,
+                  demo,
+                  tags,
+                }}
+              />
+            )
+          )}
+        </LayoutGroup>
       </div>
     </GridWrapper>
   );

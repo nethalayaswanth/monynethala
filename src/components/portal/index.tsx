@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 import { useOverlayState } from "@/contexts/overlayContext";
 import { useIsomorphicLayoutEffect } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 const Portal = ({
   children,
@@ -16,12 +17,12 @@ const Portal = ({
 }) => {
   const [root, setRoot] = useState<HTMLElement | null>(null);
 
+  
   const {
     state: { path: modalPath, opened, mount },
     dispatch,
   } = useOverlayState();
 
-  console.log(modalPath, opened);
 
   useIsomorphicLayoutEffect(() => {
     setRoot(document.getElementById(rootId));

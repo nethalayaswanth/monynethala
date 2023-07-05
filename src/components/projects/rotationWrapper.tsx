@@ -116,7 +116,7 @@ export const RotationWrapper = ({
   children,
   className,
   style,
-}: RotaionWrapperProps) => {
+}: RotaionWrapperProps ) => {
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
  
@@ -149,17 +149,16 @@ export const RotationWrapper = ({
   const transform = useMotionTemplate`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) `;
 
   return (
-    <div className={`z-[1]  `}>
+   
       <motion.div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`${className} w-full h-full`}
+        className={`${className}`}
         style={{ ...style, transform, transformStyle: "preserve-3d" }}
         ref={ref}
       >
         {children}
       </motion.div>
-    </div>
   );
 };
 

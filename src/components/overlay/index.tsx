@@ -75,7 +75,7 @@ export function StackAnimation({ children }: { children: ReactNode }) {
         {/* {cloneElement(main as ReactElement, { key: path })} */}
       </motion.div>
       <motion.div
-        id="modal-container"
+        id="modal-container"    
         className="flex  z-[1000] top-0 left-0 w-full absolute pointer-events-none  "
       >
         <motion.div

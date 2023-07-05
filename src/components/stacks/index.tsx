@@ -80,6 +80,7 @@ const Card = forwardRef<Ref, Props>(
         <div
           className={cssStyles.overlay}
           data-align={justification}
+          onMouseEnter={handleMouseEnter}
           style={{
             // transform: `scale(${scale})`,
             "--accent": color,
@@ -90,10 +91,7 @@ const Card = forwardRef<Ref, Props>(
           <div className={cssStyles.wrapper}>
             <div className={`${cssStyles.outer} ${cssStyles.absolute}  `}>
               <div className={`${cssStyles.inner} ${cssStyles.absolute} `}>
-                <div
-                  onMouseEnter={handleMouseEnter}
-                  className={`${cssStyles.crop} ${cssStyles.absolute} `}
-                >
+                <div className={`${cssStyles.crop} ${cssStyles.absolute} `}>
                   <div
                     className={cssStyles.bg}
                     style={{
@@ -123,7 +121,6 @@ const Stack = ({
   darkTextColor?: string;
   lightTextColor?: string;
 }) => {
-  
   const activeIndex = useRef(0);
   const [active, setActive] = useState(0);
   const [styles, setstyles] = useState<CarStyle[] | []>([]);
@@ -146,13 +143,13 @@ const Stack = ({
       activeIndex.current = index;
       setActive(index);
       setColor(color);
-      const { width: wrapperWidth } = container.current.getBoundingClientRect();
-      const { width: rootWidth } = wrapper.current.getBoundingClientRect();
+      const { width:rootWidth  } = container.current.getBoundingClientRect();
+       const { width: wrapperWidth } = wrapper.current.getBoundingClientRect();
       const cardWidth = wrapperWidth / cardsLength;
-
+   /* Inspired from google arts */
       let totalWidth = 0,
         styles = [],
-        e = 0
+        e = 0;
       for (let i = 0; i < cardsLength; i++) {
         var offset = i - activeIndex.current,
           direction = Math.sign(offset),
@@ -160,11 +157,12 @@ const Stack = ({
           scale = 1 - Math.log(Math.abs(offset) + 1) / 5,
           beforeElScale = 1 - Math.log(Math.abs(offset - direction) + 1) / 5,
           gap =
-            (cardWidth * (1 - scale)) / 2 +
-            (cardWidth * (1 - beforeElScale)) / 2 +
+            -(cardWidth * (1 - scale)) / 2 +
+            -(cardWidth * (1 - beforeElScale)) / 2 +
             113 * beforeElScale;
-      
-         styles.push({
+     
+
+        styles.push({
           JX: Math.abs(offset) / 10,
           gap: gap,
           index: offset,
@@ -177,44 +175,45 @@ const Stack = ({
         totalWidth += (cardWidth + 113) * scale;
       }
       totalWidth += 113;
+    
 
       var reduce = (totalWidth - rootWidth) / (totalWidth - (cardWidth + 226));
 
-      
-      for (let style of styles){
-        console.log(
-          cardWidth,
-          (cardWidth + 113) * style.scale,
-          (cardWidth + 113) * style.scale * reduce
-        );
-        style.Ov = (cardWidth + 113) * style.scale * reduce;}
-      let current:typeof styles[0];
+  
+      for (let style of styles) {
+  
+        style.Ov = (cardWidth + 113) * style.scale * reduce;
+     
+      }
+      let current: (typeof styles)[0];
       for (let i of styles) {
         current = i;
         direction = Math.sign(current.index);
         gap = current.gap - current.Ov;
-        console.log(gap,current.gap,current.Ov, direction);
+    
+
         let inbetweenEls = styles.filter((v) => {
           return (
             0 !== current.index &&
             v.direction === current.direction &&
             Math.abs(v.index) < Math.abs(current.index)
           );
-        }); 
-       
-        for(let el of inbetweenEls)console.log(el.index);
-        for (let el of inbetweenEls){
-            0 !== current.index &&
+        });
+
+        for (let el of inbetweenEls) {
+          0 !== current.index &&
             el.direction === current.direction &&
-            Math.abs(el.index) < Math.abs(current.index) 
-               && (gap += el.gap - el.Ov);}
-        
-        gap *= -direction;
+            Math.abs(el.index) < Math.abs(current.index) &&
+            (gap += el.gap - el.Ov);
+        }
+
+        gap *= direction;
+      
         current.translate = gap;
       }
 
-      
-    let  leftSideWidth = Math.abs(styles[0].index) * cardWidth;
+      let leftSideWidth = Math.abs(styles[0].index) * cardWidth;
+     
       e = 0;
 
       for (let style of styles) {
@@ -224,10 +223,9 @@ const Stack = ({
       }
 
       var a = e - leftSideWidth;
-
-      // for (let style of styles) {
-      //   style.translate += a;
-      // }
+      for (let style of styles) {
+        style.translate += a;
+      }
 
       setstyles(
         styles.map(({ zIndex, translate, scale }) => ({

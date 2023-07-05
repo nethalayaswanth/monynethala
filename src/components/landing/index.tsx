@@ -57,7 +57,7 @@ export default async function Landing() {
   const data = await getData();
   console.log(data)
   return (
-    data ?<GridWrapper fillers={fillers} id='images'>
+    data ?<GridWrapper fillers={fillers} >
       <div
         style={{
           gridColumn: `2/7`,

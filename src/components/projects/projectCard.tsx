@@ -3,7 +3,7 @@
 import { getcolor } from "@/utils";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import Content from "./content";
 
 type props = {
@@ -20,43 +20,42 @@ type props = {
   setActive: Dispatch<SetStateAction<number>>;
 };
 
-const ProjectCard = ({
-  setActive,
-  index,name,active,
- ...props
-}: props) => {
-  const color = getcolor();
-
+const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
+  const color = useMemo(() => getcolor(), []);
+ 
   return (
     <motion.div
       onMouseEnter={() => setActive(index)}
+      layout
       style={{ "--accent": color }}
       className="group flex flex-row h-screen  cursor-pointer overflow-hidden"
     >
-      <div
+      <motion.div
+        layout
         className={`flex justify-between items-start p-3 pt-[100px] ${
           active ? `text-[var(--accent)]` : ""
         }  `}
       >
         <div className="h3 vertical text-center ">{name}</div>
-      </div>
-      <div className="w-[476px] h-full">
-        <AnimatePresence>
-          {active && (
-            <motion.div
-              className="font-body text-dark-blue text-xs mb-3"
-              key={index}
-              initial={{ width: 0, opacity: 0, marginRight: 2 }}
-              animate={{
-                width: "auto",
-                opacity: 1,
-              }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-              }}
-            >
+      </motion.div>
+
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="font-body text-dark-blue text-xs mb-3"
+            key={index}
+            initial={{ width: 0, opacity: 0 }}
+            animate={{
+              width: "auto",
+              opacity: 1,
+            }}
+            exit={{ width: 0, opacity: 0 }}
+            // transition={{
+            //   // x: { type: "spring", stiffness: 300, damping: 30 ,bounce:0},
+            //   opacity: { duration: 0.2 },
+            // }}
+          >
+            <div className="w-[476px] h-full">
               <Content
                 {...{
                   name,
@@ -66,10 +65,11 @@ const ProjectCard = ({
                   ...props,
                 }}
               />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="line h-full  " />
     </motion.div>
   );

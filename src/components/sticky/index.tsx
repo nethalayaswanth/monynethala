@@ -6,12 +6,13 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
 } from "react";
 
-import { getcolor, mergeRefs } from "@/utils";
+import { getcolor } from "@/utils";
 
 import useResizeObserver from "use-resize-observer";
 import Close from "../button/close";
@@ -86,7 +87,7 @@ const Sticky = ({
           : ((boundedScrollX - minScrollX.current) * maxScrollY.current) /
             maxScrollX.current;
       // console.log(newScrollY, boundedScrollY,scrollX.current);
-     
+
       scrollXContainer.current.scrollLeft = scrollX.current;
       scrollYContainer.current.scrollTop = scrollY.current;
       console.log(newScrollX, maxScrollX.current);
@@ -108,12 +109,11 @@ const Sticky = ({
           : ((boundedScrollY - minScrollY.current) * maxScrollX.current) /
             maxScrollY.current;
       // console.log(newScrollY, boundedScrollY,scrollX.current);
-        
-       
-        scrollXContainer.current.scrollLeft = scrollX.current;
-        scrollYContainer.current.scrollTop = scrollY.current;
 
-      console.log('y');
+      scrollXContainer.current.scrollLeft = scrollX.current;
+      scrollYContainer.current.scrollTop = scrollY.current;
+
+      console.log("y");
       updateProgress();
     },
     [updateProgress]
@@ -134,13 +134,12 @@ const Sticky = ({
 
   const onScrollY = useCallback(
     async (x: Event) => {
-    
       if (forcedScroll.current) {
         console.log(`%cy`, "color:orange");
         forcedScroll.current = false;
         return;
       }
-        
+
       if (!scrollYContainer.current) return;
       const y = scrollYContainer.current.scrollTop;
       if (
@@ -166,7 +165,7 @@ const Sticky = ({
       if (forcedScroll.current) {
         return;
       }
-      
+
       if (!scrollYContainer.current || !scrollXContainer.current) return;
       const y = scrollYContainer.current.scrollTop;
 
@@ -192,6 +191,7 @@ const Sticky = ({
   const onMousewheel = useCallback(
     async (t: WheelEvent) => {
       if (!scrollYContainer.current) return;
+      // updateScrollDimensions()
 
       const y = scrollYContainer.current.scrollTop;
 
@@ -281,7 +281,7 @@ const Sticky = ({
       updateScrollDimensions();
     },
   });
-  useLayoutEffect(() => {
+  useEffect(() => {
     const scrollContainerX = scrollXContainer.current;
     const scrollContainerY = scrollYContainer.current;
     const sticky = stickyContainer.current;
@@ -319,10 +319,7 @@ const Sticky = ({
 
   return (
     <Context.Provider value={props}>
-      <div
-        ref={mergeRefs(scrollYContainer, ref)}
-        className={styles["scroll_container-y"]}
-      >
+      <div ref={scrollYContainer} className={styles["scroll_container-y"]}>
         <div ref={stickyContainer} className={styles["scroll_content-y"]}>
           <div className={styles["scroll_container-x-crop"]}>
             <div
@@ -331,7 +328,9 @@ const Sticky = ({
               className={styles["scroll_container-x"]}
             >
               <div ref={scrollXContent} className={styles["scroll_content-x"]}>
-                <div className={styles["scrolling_content"]}>{children}</div>
+                <div className={styles["scrolling_content"]} ref={ref}>
+                  {children}
+                </div>
               </div>
             </div>
           </div>
