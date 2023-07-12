@@ -11,9 +11,10 @@ import Link from "next/link";
 import Button from "@/components/button";
 
 async function getImages() {
-  const listRef = ref(storage, "images");
+  
 
   try {
+    const listRef = ref(storage, "images");
     const list = await listAll(listRef);
     return Promise.all(
       list.items.map((itemRef) => {
@@ -22,7 +23,7 @@ async function getImages() {
     );
   } catch (error) {
     // Uh-oh, an error occurred!
-    console.log(error);
+    throw error
   }
 }
 async function Gallery() {
@@ -39,7 +40,7 @@ async function Gallery() {
       </HorizontalNavBar>
 
       <Grid>
-        {images &&
+        {images ?
           images.map((image, index) => {
             return (
               <div
@@ -56,7 +57,7 @@ async function Gallery() {
                 ></Image>
               </div>
             );
-          })}
+          }):null}
       </Grid>
     </>
   );
