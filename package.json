@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "20.1.4",
+    "@types/node": "20.1.4",  
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
@@ -29,6 +29,7 @@
     "use-resize-observer": "^9.1.0"
   },
   "devDependencies": {
-    "@types/react-is": "^18.2.0"
+    "@types/react-is": "^18.2.0",
+    "encoding": "^0.1.13"
   }
 }

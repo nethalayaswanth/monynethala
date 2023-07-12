@@ -1,9 +1,9 @@
 "use client";
 import React, {
+  ComponentPropsWithoutRef,
+  useEffect,
   useRef,
   useState,
-  useEffect,
-  ComponentPropsWithoutRef,
 } from "react";
 
 import Scrambler from "scrambling-text";
