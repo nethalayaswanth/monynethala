@@ -28,11 +28,11 @@ const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
       onMouseEnter={() => setActive(index)}
       layout
       style={{ "--accent": color }}
-      className="group flex flex-row h-screen  cursor-pointer overflow-hidden"
+      className="group flex flex-row h-screen   overflow-hidden"
     >
       <motion.div
         layout
-        className={`flex justify-between items-start p-3 pt-[100px] ${
+        className={`flex justify-between cursor-pointer items-start p-3 pt-[100px] ${
           active ? `text-[var(--accent)]` : ""
         }  `}
       >
@@ -42,7 +42,7 @@ const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
       <AnimatePresence>
         {active && (
           <motion.div
-            className="font-body text-dark-blue text-xs mb-3"
+            className="font-body text-black text-xs mb-3"
             key={index}
             initial={{ width: 0, opacity: 0 }}
             animate={{

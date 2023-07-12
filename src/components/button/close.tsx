@@ -7,7 +7,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { CardProps } from "../card";
 
 const Close = ({onClick, ...cardProps }: CardProps) => {
-  const dispatch = useOverlayDispatch();
+
   return (
     <Rounded {...cardProps} >
       <IoMdCloseCircle size={32} />

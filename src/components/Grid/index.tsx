@@ -138,12 +138,12 @@ const Grid = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const onMove = useCallback((translate: number) => {
+
     if (typeof window !== "undefined") {
       const container = main.current;
 
       if (!container) return;
-      // window.scrollBy({ top: translate });
-      container.scrollTop = translate;
+       window.scrollBy({ top: translate });
     }
   }, []);
 
@@ -187,7 +187,7 @@ const Grid = ({ children }: { children: ReactNode }) => {
         className="w-full h-screen overflow-y-scroll"
       >
         <div
-          className={`w-full  flex   flex-col items-center relative min-h-[100vh]`}
+          className={`w-full  flex overflow-x-hidden  flex-col items-center relative min-h-[100vh]`}
         >
           {images ? (
             <>

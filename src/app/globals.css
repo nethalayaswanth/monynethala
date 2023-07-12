@@ -2,25 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
+   
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
 } */
 
 @layer base {
-  *{
+  * {
     user-select: none;
   }
-  :root {
-  --navHeight:80px
-}
 
   body {
-    color: rgb(var(--foreground-rgb));
+     --foreground-rgb: 255, 255, 255;
+    --navHeight: 80px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "liga" on, "clig" on, "dlig" off;
@@ -54,7 +51,7 @@
 
   .grid-screen {
     --min-width: calc(100vw - var(--navHeight));
-     width:var(--min-width)
+    width: var(--min-width);
   }
   .grid-layout {
     display: grid;
@@ -165,4 +162,25 @@
   .detail-text-img .text {
     @apply mr-[30px]  font-semibold leading-[1.01] tracking-[-.04em] text-[0.875rem] w-[calc(var(--column-width)*5)] max-w-[240px] md:max-w-[none];
   }
+
+  .slideshow .carousel {
+    @apply w-full h-full;
+  }
+
+   .slideshow .carousel-wrapper {
+    @apply w-full h-full;
+  }
+
+  .slideshow .carousel-item {
+    @apply w-full h-full;
+  }
 }
+
+
+@layer utilities {
+
+.blend {
+mix-blend-mode: exclusion
+}
+ 
+ }

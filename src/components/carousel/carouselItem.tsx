@@ -1,10 +1,9 @@
 import React, {
-  PropsWithChildren,
-  CSSProperties,
-  forwardRef,
   ForwardedRef,
-  useRef,
   HTMLAttributes,
+  PropsWithChildren,
+  forwardRef,
+  useRef,
 } from "react";
 
 export type ItemRef = ForwardedRef<HTMLDivElement>;

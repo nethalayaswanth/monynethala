@@ -226,8 +226,6 @@ export const Carousel = forwardRef<
     (clientX: number) => {
       let deltaX = clientX - lastPointer.current;
       lastPointer.current = clientX;
-
-      // console.log(deltaX)
       swipeDistance.current += deltaX;
       pan(deltaX);
     },

@@ -43,9 +43,6 @@ const Video = ({ src }: Props) => {
     if (userInteracted) {
       playVideo();
     }
-    //  else {
-    //   pauseVideo();
-    // }
   }, [pauseVideo]);
   const onTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.target as HTMLVideoElement;
@@ -56,23 +53,26 @@ const Video = ({ src }: Props) => {
   return (
     <div
       onClick={handlePlay}
-      className="h-full w-full flex justify-center items-center relative"
+      style={{ aspectRatio: 16 / 9, width: `calc(100% - 8px)` }}
+      className=" flex items-center cursor-pointer "
     >
-      {!playing ? (
-        <div className=" h-full w-full flex justify-center items-center z-999  absolute text-white cursor-not-allowed bg-[rgba(0,0,0,0.3)] ">
-          <BsFillPlayFill size={40} />
-        </div>
-      ) : null}
+      <button className="h-full w-full flex justify-center  items-center relative">
+        {!playing ? (
+          <div className=" h-full w-full flex justify-center items-center z-999  absolute text-white  bg-[rgba(0,0,0,0.3)] ">
+            <BsFillPlayFill size={40} />
+          </div>
+        ) : null}
 
-      <div className="w-full h-full">
-        <video
-          src={src}
-          autoPlay={true}
-          loop={true}
-          onTimeUpdate={onTimeUpdate}
-          ref={videoRef}
-        />
-      </div>
+        <div className="w-full h-full">
+          <video
+            src={src}
+            autoPlay={true}
+            loop={true}
+            onTimeUpdate={onTimeUpdate}
+            ref={videoRef}
+          />
+        </div>
+      </button>
     </div>
   );
 };
