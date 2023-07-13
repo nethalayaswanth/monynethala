@@ -1,64 +1,45 @@
 import Grid from "@/components/Grid";
-
 import { getcolor } from "@/utils";
 import Image from "next/image";
-
-import HorizontalNavBar from "@/components/navbar/horizontalNavbar";
-import { IoMdCloseCircle as Close } from "react-icons/io";
-import { storage } from "@/firebase";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import Link from "next/link";
 import Button from "@/components/button";
+import HorizontalNavBar from "@/components/navbar/horizontalNavbar";
 
-async function getImages() {
-  
+import Link from "next/link";
+// import { IoMdCloseCircle as Close } from "react-icons/io";
 
-  try {
-    const listRef = ref(storage, "images");
-    const list = await listAll(listRef);
-    return Promise.all(
-      list.items.map((itemRef) => {
-        return getDownloadURL(itemRef);
-      })
-    );
-  } catch (error) {
-    // Uh-oh, an error occurred!
-    throw error
-  }
-}
-async function Gallery() {
-  const images = await getImages();
-
+ function Gallery({ images }: { images: any[] }) {
   return (
     <>
       <HorizontalNavBar>
         <Link href="/">
-         <Button>
-          <Close size={30}/>
-         </Button>
+          <Button>{/* <Close size={30}/> */}</Button>
         </Link>
       </HorizontalNavBar>
 
-      <Grid>
-        {images ?
-          images.map((image, index) => {
+      {images && images.length!==0 ? (
+        <Grid>
+          {images.map((image, index) => {
             return (
               <div
                 key={index}
-                className="w-full  relative  "
-                style={{ backgroundColor: getcolor(), height: "200px" }}
+                className="w-full h-auto relative  "
+                style={{ backgroundColor: getcolor()}}
               >
                 <Image
                   key={`${index}`}
-                  src={image}
+                  
+                  width={image.width}
+                  height={image.height}
+                  src={image.url}
                   className={`w-full h-auto bg-cover bg-center will-change-transform`}
-                  alt={""}
-                  fill={true}
+                  alt={" "}
+                  
                 ></Image>
               </div>
             );
-          }):null}
-      </Grid>
+          })}
+        </Grid>
+      ) : null}
     </>
   );
 }

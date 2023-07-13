@@ -7,49 +7,8 @@ import useCursor from "@/hooks/useCursorMove";
 import useIsomorphicLayoutEffect from "@/hooks/useIsomorphicLayout";
 import { generateRandomHsv, mergeRefs } from "@/utils";
 import { stagger, transform, useAnimate } from "framer-motion";
+import { getPosition,breakpoints,rows } from "./utils";
 
-const breakpoints = {
-  sm: 480,
-  md: 740,
-  lg: Infinity,
-};
-const sm = [[2], [1], [3], [1, 2], [3], [1], [2, 3], [1]];
-const md = [[3], [1, 2], [3], [4, 2], [1], [4], [2, 3], [4]];
-const lg = [[1, 4], [2], [3, 5], [1, 4], [2, 3], [3], [1, 5], [2]];
-
-const rows = {
-  sm: { cols: 3, places: sm },
-  md: { cols: 4, places: md },
-  lg: { cols: 5, places: lg },
-};
-const totalPlaces = {
-  sm: sm.flat().length,
-  md: md.flat().length,
-  lg: lg.flat().length,
-};
-
-const getPosition = (index: number, breakpoint: keyof typeof breakpoints) => {
-  const positions = rows[breakpoint].places;
-
-  let r,
-    c,
-    i = 0;
-  let current = Math.floor(index % totalPlaces[breakpoint]);
-  const pass = Math.floor(index / totalPlaces[breakpoint]);
-  let row = 1 + positions.length * pass;
-
-  for (r = 0; r < positions.length; r++) {
-    for (c = 0; c < positions[r].length; c++) {
-      if (i === current) {
-        i++;
-        return [row + r, positions[r][c]];
-      }
-      i++;
-    }
-  }
-
-  return [1, 1];
-};
 
 const Grid = ({ children }: { children: ReactNode }) => {
   const disabled = useRef<boolean>(false);
@@ -216,7 +175,7 @@ const Grid = ({ children }: { children: ReactNode }) => {
                       }}
                       className={" grid_item relative "}
                       style={{
-                        backgroundColor: generateRandomHsv(),
+                       
                         gridColumn: col,
                         gridRow: row,
                       }}
@@ -252,7 +211,7 @@ const Grid = ({ children }: { children: ReactNode }) => {
                       }}
                       className={"grid_item relative "}
                       style={{
-                        backgroundColor: generateRandomHsv(),
+                       
                         gridColumn: col,
                         gridRow: row,
                       }}

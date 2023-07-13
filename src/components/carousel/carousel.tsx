@@ -137,6 +137,7 @@ export const Carousel = forwardRef<
       let offset;
 
       if (direction < 0 && -1 * currentX < (offset = nodeOffsets[i][0])) {
+        
         active = i;
         if (
           !passedVelocityThresold &&
@@ -189,7 +190,7 @@ export const Carousel = forwardRef<
     isDragging.current = false;
     swipeDistance.current = 0;
     overShootingDistance.current = 0;
-  }, []);
+  }, []); 
 
   const pan = useCallback(
     (pan: number, elasticConstant = 0.55) => {
