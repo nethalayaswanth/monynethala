@@ -26,7 +26,7 @@ export default async function Page() {
     const images = await getImages();
   return (
     <>
-      <Gallery images={images} />
+      {/* <Gallery images={images} /> */}
     </>
   );
 }
