@@ -12,6 +12,8 @@ import React, {
 import { useOverlayDispatch } from "@/contexts/overlayContext";
 import useRefCb from "@/hooks/useRefCb";
 import { getcolor, isDarkColor } from "@/utils";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import { docData } from "../landing";
 import cssStyles from "./stack.module.css";
 
@@ -85,7 +87,7 @@ const Card = forwardRef<Ref, Props>(
             // transform: `scale(${scale})`,
             "--accent": color,
             "--borderWidth": `${borderWidth}px`,
-            ...(active && { color: textColor }),
+            ...(active && { color }),
           }}
         >
           <div className={cssStyles.wrapper}>
@@ -103,7 +105,9 @@ const Card = forwardRef<Ref, Props>(
               </div>
             </div>
           </div>
-          {active && children}
+          <div className={cssStyles.contentWrapper}>
+            <div className={cssStyles.content}>{active && children}</div>
+          </div>
         </div>
       </div>
     );
@@ -273,9 +277,21 @@ const Stack = ({
                       img={url}
                       onHover={handleHover}
                     >
-                      <div className=" text-3xl font-semibold mt-[24px] tracking-[-.06em] transition-colors">
-                        {data[active].title}
-                      </div>
+                      <motion.div
+                        initial={{ opacity: 0, translateY: 50 }}
+                        animate={{ opacity: 1, translateY: 0 }}
+                        className="flex w-full flex-col  items-center"
+                      >
+                        <div className="text-3xl text-center font-semibold mt-[32px] mb-[36px] tracking-[-.06em] transition-colors">
+                          {data[active].title}
+                        </div>
+                        <Link
+                          href="/images"
+                          className="leading-[1.01] tracking-[-.04em] text-[0.875rem] transition-colors text-black hover:text-blue-800"
+                        >
+                          See more
+                        </Link>
+                      </motion.div>
                     </Card>
                   );
                 })}
@@ -283,7 +299,7 @@ const Stack = ({
           </div>
         </div>
       </div>
-
+{/* 
       <button
         onClick={() => {
           dispatch({ type: "open", payload: { path: "/images" } });
@@ -291,7 +307,7 @@ const Stack = ({
         className=" mt-[16px] leading-[1.01] tracking-[-.04em] text-[0.875rem] transition-colors"
       >
         See more
-      </button>
+      </button> */}
     </div>
   );
 };

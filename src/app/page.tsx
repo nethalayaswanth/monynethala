@@ -19,7 +19,6 @@ export default function Home() {
       <Sticky showProgress={false}>
         <HashNavigation>
           <NavBar absolute gridVisible={false}>
-            
             <Navigation />
           </NavBar>
           <Bio />

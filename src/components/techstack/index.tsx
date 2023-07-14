@@ -164,7 +164,7 @@ const TechStack = () => {
                             layoutId={title}
                             highlightcolor={getContrastColor(accent)}
                           >
-                            <div>
+                            <div className="chip-text">
                               <ScramblingText text={name} />
                             </div>
                           </Badge>

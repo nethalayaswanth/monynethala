@@ -325,7 +325,7 @@ export const Carousel = forwardRef<
       startPanning(touch.clientX);
     };
     const onTouchMove = (e: TouchEvent) => {
-      e.preventDefault(); // Stop vertical rubberbanding on iOS
+      e.preventDefault(); 
       e.stopPropagation();
       var touch = e.touches[0];
       handlePanning(touch.clientX);
@@ -371,7 +371,7 @@ export const Carousel = forwardRef<
         handlePointUp();
       }, 200);
       e.preventDefault();
-      e.stopPropagation();
+      // e.stopPropagation();
       if (!isDragging.current) doInitialMeaurements();
       isDragging.current = true;
       swipeDistance.current += e.deltaX;

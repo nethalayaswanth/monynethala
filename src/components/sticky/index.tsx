@@ -205,7 +205,7 @@ const Sticky = ({
       }
 
       t.preventDefault();
-      console.log(`%cwheel`, "color:red");
+   
       const deltaX = t.deltaX;
       const deltaY = t.deltaY;
       isHorizontal.current = Math.abs(deltaX) > Math.abs(deltaY);

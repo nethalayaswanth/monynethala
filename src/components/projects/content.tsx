@@ -39,13 +39,13 @@ const Content = ({
             tags.map((tag) => {
               return (
                 <Badge key={tag} highlightcolor={color} layoutId={name}>
-                  {/* <ScramblingText text={tag} /> */}
-                  {tag}
+                
+                  <p className="chip-text">{tag}</p>
                 </Badge>
               );
             })}
         </div>
-        <div className=" p-2 z-[1] body-3  ">{description}</div>
+        <div className=" p-2 z-[1]  body-3">{description}</div>
       </div>
       <div
         className={`z-[2] flex-1 flex  justify-center items-center  relative   `}
@@ -53,24 +53,22 @@ const Content = ({
         {video || image ? (
           <SlideShow color={color}>
             <CarouselItem>
-              
-                <Floating className="w-full">
-                  {image && (
-                    <div
-                      style={{ backgroundColor: color }}
-                      className="w-[300px] h-[400px]"
-                    >
-                      <Image
-                        src={image}
-                        className={`w-full h-auto bg-cover bg-center will-change-transform`}
-                        alt={""}
-                        fill={true}
-                      ></Image>
-                    </div>
-                  )}
-                  {video && <Video src={video}></Video>}
-                </Floating>
-              
+              <Floating className="w-full">
+                {image && (
+                  <div
+                    style={{ backgroundColor: color }}
+                    className="w-[300px] h-[400px]"
+                  >
+                    <Image
+                      src={image}
+                      className={`w-full h-auto bg-cover bg-center will-change-transform`}
+                      alt={""}
+                      fill={true}
+                    ></Image>
+                  </div>
+                )}
+                {video && <Video src={video}></Video>}
+              </Floating>
             </CarouselItem>
           </SlideShow>
         ) : (

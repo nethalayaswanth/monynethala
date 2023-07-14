@@ -66,7 +66,6 @@ const Video = ({ src }: Props) => {
         <div className="w-full h-full">
           <video
             src={src}
-            autoPlay={true}
             loop={true}
             onTimeUpdate={onTimeUpdate}
             ref={videoRef}

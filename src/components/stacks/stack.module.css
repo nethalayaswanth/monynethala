@@ -4,7 +4,7 @@
   margin: 0 auto;
   max-width: 1200px;
   width: 100%;
-  
+  height: 100%;
 }
 
 .grid {
@@ -25,7 +25,7 @@
 }
 
 .cardsWrapper {
-  height: 1200px;
+  height: 100%;
 }
 
 .item {
@@ -55,34 +55,64 @@
   transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .card .wrapper {
-  position: absolute;
+  position: relative;
   height: 454px;
-  width:100%;
+  width: 100%;
   transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
   display: flex;
   align-items: center;
 }
 
-
-.card .overlay[data-align="right"] {
-  border-style: solid;
-  border-right-width:var(--borderWidth);
-  border-color: black;
+.card .contentWrapper {
+  width: 100%;
+  position: relative;
+  height: 0px;
 }
 
-.card .overlay[data-align="left"] {
-  border-style: solid;
-  border-left-width: var(--borderWidth);
-  border-color: black;
+.card .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
-.card.active .overlay {
+
+.card .overlay::after {
   border-style: solid;
-  border-left-width: var(--borderWidth);
+  border-right-width: 0px;
+  border-color: black;
+  content: "";
+  position: absolute;
+  right: 0;
+  height: 2000px;
+}
+
+.card .overlay::before {
+  border-style: solid;
+  border-right-width: 0px;
+  border-color: black;
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 2000px;
+}
+
+.card .overlay[data-align="right"]::after {
   border-right-width: var(--borderWidth);
-  border-color: black;
+}
+
+.card .overlay[data-align="left"]::before {
+  border-right-width: var(--borderWidth);
+}
+.card.active .overlay::after {
+  border-right-width: var(--borderWidth);
+}
+.card.active .overlay::before {
+  border-right-width: var(--borderWidth);
 }
 
 .flex {
@@ -91,6 +121,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 }
 
 .section {
@@ -99,17 +130,11 @@
   max-width: 1200px;
   align-items: center;
   display: flex;
-  flex-direction: column;
   width: 100%;
+  height: 100%;
 }
 
 @media screen and (min-width: 841px) {
-  .section {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1200px;
-    width: calc(100% - 40px * 2);
-  }
 }
 .flexMax {
   margin: 0 auto;
@@ -208,9 +233,7 @@
   justify-content: center;
   display: flex;
   flex-direction: column;
-
   width: 100%;
-  height: calc(100vh - 80px);
   position: relative;
   transition: background-color 1000ms cubic-bezier(0.19, 1, 0.22, 1);
 }

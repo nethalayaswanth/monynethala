@@ -149,8 +149,12 @@
     @apply leading-[1.031] tracking-[-.04em] text-[1.25rem] font-bold;
   }
 
+  .chip-text {
+   @apply text-[12px] ;
+  }
+
   .body-3 {
-    @apply leading-[1.62] md:leading-[1.56]  lg:leading-[1.5] tracking-[-.04em] text-[1.25rem]  font-medium;
+    @apply leading-[1.62] md:leading-[1.56]  lg:leading-[1.5] tracking-[-.04em] text-[1rem]  font-medium;
   }
 
   .detail-layout {
