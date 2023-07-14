@@ -282,7 +282,7 @@ const Stack = ({
                         animate={{ opacity: 1, translateY: 0 }}
                         className="flex w-full flex-col  items-center"
                       >
-                        <div className="text-3xl text-center font-semibold mt-[32px] mb-[36px] tracking-[-.06em] transition-colors">
+                        <div className="text-[1.25rem] text-center font-semibold mt-[32px] mb-[24px] tracking-[-.06em] transition-colors">
                           {data[active].title}
                         </div>
                         <Link

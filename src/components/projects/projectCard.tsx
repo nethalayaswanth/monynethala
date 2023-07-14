@@ -5,24 +5,17 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { Dispatch, SetStateAction, useMemo } from "react";
 import Content from "./content";
+import { ProjectsDataType } from "@/data/projects";
 
 type props = {
-  name: string;
-  tags: string[];
-  description: string;
-  github?: string;
-  demo?: string;
-  color?: string;
-  image?: string;
-  video?: string;
   active: boolean;
   index: number;
   setActive: Dispatch<SetStateAction<number>>;
-};
+} & ProjectsDataType;
 
 const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
   const color = useMemo(() => getcolor(), []);
- 
+
   return (
     <motion.div
       onMouseEnter={() => setActive(index)}

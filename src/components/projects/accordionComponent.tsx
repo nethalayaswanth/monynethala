@@ -24,7 +24,7 @@ const fillers = { mobile: 0, tablet: 2, desktop: 4 };
         <LayoutGroup>
           {projectsData.map(
             (
-              { name, description, github, image, video, demo, tags },
+              { name, description, github, content, demo, tags },
               index
             ) => (
               <ProjectCard
@@ -36,8 +36,7 @@ const fillers = { mobile: 0, tablet: 2, desktop: 4 };
                   index,
                   description,
                   github,
-                  image,
-                  video,
+                  content,
                   demo,
                   tags,
                 }}

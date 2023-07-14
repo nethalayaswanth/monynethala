@@ -477,6 +477,7 @@ export const Carousel = forwardRef<
     });
   }
 
+ 
   return (
     <div ref={containerRef} className="carousel carousel-container">
       <motion.div

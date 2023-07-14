@@ -16,7 +16,7 @@
   }
 
   body {
-     --foreground-rgb: 255, 255, 255;
+    --foreground-rgb: 255, 255, 255;
     --navHeight: 80px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -150,7 +150,7 @@
   }
 
   .chip-text {
-   @apply text-[12px] ;
+    @apply text-[12px];
   }
 
   .body-3 {
@@ -171,20 +171,31 @@
     @apply w-full h-full;
   }
 
-   .slideshow .carousel-wrapper {
+  .slideshow .carousel-wrapper {
     @apply w-full h-full;
   }
 
   .slideshow .carousel-item {
     @apply w-full h-full;
   }
-}
 
+  .detail .carousel-container {
+    overflow:visible
+  }
+
+  .content .content-img {
+    width: calc(100% - 80px);
+   
+  }
+
+  .content .content-img[data-portrait=true] {
+    width: auto;
+    height: calc(100% - 60px);
+  }
+}
 
 @layer utilities {
-
-.blend {
-mix-blend-mode: exclusion
+  .blend {
+    mix-blend-mode: exclusion;
+  }
 }
- 
- }
