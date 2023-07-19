@@ -17,7 +17,7 @@ const SlideShow = ({
 
   return (
     <div className="slideshow flex flex-col h-full w-full justify-between ">
-      <div className="flex-1 ">
+      <div className="flex-1 min-h-0 ">
         <Carousel ref={carouselRef}>{children}</Carousel>
       </div>
 

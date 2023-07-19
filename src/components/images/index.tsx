@@ -9,7 +9,7 @@ const Images = () => {
 
   return (
     <div className="flex flex-grow flex-shrink flex-col ">
-     { /* @ts-expect-error Async Server Component */}
+{/*     
       <Landing />
       <GridWrapper fillers={fillers}>
         <div
@@ -21,7 +21,7 @@ const Images = () => {
         >
           <Bars />
         </div>
-      </GridWrapper>
+      </GridWrapper> */}
     </div>
   );
 };

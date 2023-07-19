@@ -17,7 +17,7 @@ const NavButton = ({
       window.location.hash = path.slice(2);
     },
   });
-
+console.log(hashNavigation)
   const dispatch =useOverlayDispatch()
   return hashNavigation ? (
     <button
@@ -30,7 +30,7 @@ const NavButton = ({
     </button>
   ) : (
     <Link
-     
+      className="mx-auto"
       href={path}
     >
       {children}

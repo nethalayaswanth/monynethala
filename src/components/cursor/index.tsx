@@ -27,8 +27,6 @@ export const Cursor = ({ onMove = (translate: number) => {} }) => {
           ? "visible"
           : "hidden";
 
-          console.log(x,y)
-
       cursor.set({ x, y, visibility });
 
       const offset = y - screenHeight / 2;

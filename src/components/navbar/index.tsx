@@ -20,29 +20,30 @@ const NavBar = ({
   return (
     <div
       className={` nav  ${
-        !horizontal ? `w-[var(--navHeight)]` : `h-[var(--navHeight)] max-w-[696px]`
+        !horizontal
+          ? `w-[var(--navHeight)]`
+          : `h-[var(--navHeight)] max-w-[696px]`
       }  p-4 ${
         absolute
           ? ` fixed top-0 left-0 h-screen `
           : `sticky left-[0px] top-[0px] `
       }  z-[999]  justify-center ${
         backgroundTransparent ? "" : "bg-white"
-      } line   ${className}`}
+      } line border-0 border-r-[1px]  ${className}`}
     >
       <>
         <div
-          className={`flex  justify-between  mb-[100px] ${
-            !horizontal ? `flex-col ` : ""
+          className={`flex  justify-between  ${
+            !horizontal ? `flex-col h-full ` : ""
           }`}
         >
           <Link className="flex justify-center mx-auto" href="/">
             <div
               className={`text-gray-900 text-3xl font-semibold ${
-                !horizontal ? `vertical text-center` : ""
+                !horizontal ? `text-vertical text-center` : ""
               }   tracking-[-.06em]`}
             >
-              <ScramblingText  text={'MONY NETHALA'}/>
-              
+              <ScramblingText text={"MONY NETHALA"} />
             </div>
           </Link>
           {children && children}

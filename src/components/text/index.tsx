@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import Scrambler from "scrambling-text";
+import scrambler from './scrambler'
 
 type TextProps<C extends React.ElementType> = {
   as?: C;
@@ -25,7 +25,7 @@ export default function ScramblingText<C extends React.ElementType>({
 }: Props<C>) {
   const [scrambledText, setText] = useState(text);
 
-  const scramblerRef = useRef(new Scrambler());
+  const scramblerRef = useRef(new scrambler());
 
   useEffect(() => {
     scramblerRef.current.scramble(text, setText);

@@ -30,18 +30,7 @@ const GridWrapper = ({
       style={style}
       id={id}
     >
-      {/* {fillerCount!==0 &&
-        Array(fillerCount)
-          .fill(0)
-          .map((_, index) => (
-            <div
-              key={index}
-              className={` grid-card flex justify-stretch  line`}
-            >
-              <Card index={index} className="flex-1" layoutId="floating" />
-            </div>
-          ))} */}
-
+      
       {children}
     </div>
   );

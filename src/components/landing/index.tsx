@@ -13,6 +13,7 @@ import {
 } from "firebase/storage";
 import Stack from "../stacks";
 import GridWrapper from "../wrapper/gridWrapper";
+import { showcase } from "@/data/showcase";
 
 const fillers = { mobile: 1, tablet: 9, desktop: 15 };
 
@@ -53,11 +54,11 @@ async function getData() {
   }
 }
 
-export default async function Landing() {
-  const data = await getData();
-  console.log(data)
-  return (
-    data ?<GridWrapper fillers={fillers} >
+export default  function Landing() {
+ 
+  
+  return showcase ? (
+    <GridWrapper fillers={fillers}>
       <div
         style={{
           gridColumn: `2/7`,
@@ -65,8 +66,8 @@ export default async function Landing() {
         }}
         className={` grid-card flex justify-stretch  text-noto text-base tracking-wide  `}
       >
-        <Stack data={data} />
+        <Stack data={showcase} />
       </div>
-    </GridWrapper>:null
-  );
+    </GridWrapper>
+  ) : null;
 }

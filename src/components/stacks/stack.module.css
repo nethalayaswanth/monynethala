@@ -178,10 +178,12 @@
 }
 .card .absolute {
   transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+ 
 }
 
+
 .card.active .crop {
-  transform: scale(1.2);
+  transform: scale(1);
   transition: transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -192,6 +194,7 @@
   position: relative;
   min-height: 336px;
   overflow: hidden;
+ 
 }
 
 .bg {
@@ -211,6 +214,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  object-fit: contain
 }
 
 .hero {

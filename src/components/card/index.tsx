@@ -46,7 +46,6 @@ const Card = ({
 
   const textColor = isDarkColor(color) ? darkTextColor : lightTextColor;
   
-  console.log(highlightcolor)
   return (
     <motion.div
       layout

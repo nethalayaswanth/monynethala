@@ -35,9 +35,9 @@ export function StackAnimation({ children }: { children: ReactNode }) {
   const translateOverlayX = useTransform(progress, [0, 1], [100, 0]);
   const transform = useMotionTemplate`translate(${translateX}%,0)`;
   const transformOverlay = useMotionTemplate`translate(${translateOverlayX}%,0)`;
-  useMotionValueEvent(progress, "change", (latest) => {
-    console.log(latest);
-  });
+  // useMotionValueEvent(progress, "change", (latest) => {
+  //   console.log(latest);
+  // });
 
   useLayoutEffect(() => {
     if (opened && modalPath) {

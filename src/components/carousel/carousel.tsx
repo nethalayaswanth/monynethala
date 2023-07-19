@@ -1,21 +1,27 @@
 "use client";
 
 import { mergeRefs } from "@/utils";
-import { animate, clamp, motion,MotionValue, useMotionValue } from "framer-motion";
 import {
-  PropsWithChildren,
+  animate,
+  clamp,
+  motion,
+  MotionValue,
+  useMotionValue,
+} from "framer-motion";
+import {
   cloneElement,
   forwardRef,
+  MutableRefObject,
+  PropsWithChildren,
   useCallback,
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
-  MutableRefObject,
 } from "react";
 import useResizeObserver from "use-resize-observer";
 import "./styles.css";
-import { filterChildren } from "./utils";
+import { detectSwipeDirection, filterChildren } from "./utils";
 
 export type CarouselProps = {};
 export type Node = {
@@ -54,10 +60,12 @@ export const Carousel = forwardRef<
   const x = useMotionValue(0);
   const progress = useMotionValue(0);
   const lastPointer = useRef(0);
+  const lastPointerY = useRef(0);
   const swipeDistance = useRef(0);
   const overShootingDistance = useRef(0);
   const maxScroll = useRef(0);
   const isDragging = useRef(false);
+  const isOverThresold = useRef(false);
   const scrollingDirection = useRef(0);
   const intervalPoints = useRef<number[]>([]);
   const overShooting = useRef(0);
@@ -137,7 +145,6 @@ export const Carousel = forwardRef<
       let offset;
 
       if (direction < 0 && -1 * currentX < (offset = nodeOffsets[i][0])) {
-        
         active = i;
         if (
           !passedVelocityThresold &&
@@ -177,9 +184,10 @@ export const Carousel = forwardRef<
   }, [progress, x]);
 
   const startPanning = useCallback(
-    (x: number) => {
+    (x: number, y: number) => {
       lastPointer.current = x;
-      isDragging.current = true;
+      lastPointerY.current = y;
+
       doInitialMeaurements();
     },
     [doInitialMeaurements]
@@ -188,9 +196,10 @@ export const Carousel = forwardRef<
   const stopPanning = useCallback((x?: number) => {
     if (x) lastPointer.current = x;
     isDragging.current = false;
+    isOverThresold.current = false;
     swipeDistance.current = 0;
     overShootingDistance.current = 0;
-  }, []); 
+  }, []);
 
   const pan = useCallback(
     (pan: number, elasticConstant = 0.55) => {
@@ -216,7 +225,13 @@ export const Carousel = forwardRef<
       } else {
         overShootingDistance.current = 0;
       }
-      scrollingDirection.current = Math.sign(currentX - prevX);
+      const direction = Math.sign(currentX - prevX);
+      if (direction) {
+        {
+          scrollingDirection.current = direction;
+        }
+      }
+
       x.set(currentX);
       progress.set(clamp(Math.abs(currentX / maxScroll.current), 0, 1));
     },
@@ -224,11 +239,35 @@ export const Carousel = forwardRef<
   );
 
   const handlePanning = useCallback(
-    (clientX: number) => {
+    (
+      clientX: number,
+      clientY: number,
+      e: MouseEvent | TouchEvent | WheelEvent
+    ) => {
       let deltaX = clientX - lastPointer.current;
-      lastPointer.current = clientX;
-      swipeDistance.current += deltaX;
-      pan(deltaX);
+      let deltaY = clientY - lastPointerY.current;
+
+      isDragging.current = true;
+      const drag = () => {
+        e.preventDefault();
+        lastPointer.current = clientX;
+        lastPointerY.current = clientY;
+        swipeDistance.current += deltaX;
+        pan(deltaX);
+      };
+      if (isOverThresold.current) {
+        drag();
+        return;
+      }
+
+      const direction = detectSwipeDirection(deltaX, deltaY, 8);
+
+
+      if (direction === "left" || direction === "right") {
+        e.stopPropagation();
+        isOverThresold.current = true;
+        drag();
+      }
     },
     [pan]
   );
@@ -294,8 +333,6 @@ export const Carousel = forwardRef<
           activeIndex.current = i;
 
           offset = offsets[i];
-
-          // console.log(i, tx, points[i], points[i + 1], offset);
           break;
         }
       }
@@ -321,43 +358,52 @@ export const Carousel = forwardRef<
     let wheelTimeout: ReturnType<typeof setTimeout>;
 
     const onTouchStart = (e: TouchEvent) => {
+    
       var touch = e.touches[0];
-      startPanning(touch.clientX);
+      startPanning(touch.clientX, touch.clientY);
     };
     const onTouchMove = (e: TouchEvent) => {
-      e.preventDefault(); 
-      e.stopPropagation();
+    
       var touch = e.touches[0];
-      handlePanning(touch.clientX);
+      handlePanning(touch.clientX, touch.clientY, e);
     };
 
     const onTouchEnd = (e: TouchEvent) => {
-      var touch = e.touches[0];
-      handlePointUp(touch.clientX);
-      // endTrackingInputMode("drag");
+      if (!e.touches[0]) {
+        var touch = e.changedTouches[0];
+       
+        handlePointUp(touch.clientX);
+      }
     };
 
     const onTouchCancel = (e: TouchEvent) => {
-      console.log("touch cancel");
-      handlePointUp();
+     
+      if (!e.touches[0]) {
+        var touch = e.changedTouches[0];
+        handlePointUp(touch.clientX);
+      }
     };
     const onMouseDown = (e: MouseEvent) => {
-      startPanning(e.clientX);
+    
+      startPanning(e.clientX, e.clientY);
     };
     const onMouseMove = (e: MouseEvent) => {
+    
       if (isDragging.current) {
-        handlePanning(e.clientX);
+       
+        handlePanning(e.clientX, e.clientY, e);
         return;
       }
       panOnHover(e.clientX);
     };
     const onMouseUp = (e: MouseEvent) => {
+    
       handlePointUp(e.clientX);
     };
     const onMouseLeave = (e: MouseEvent) => {
-      console.log("mouse leave");
+      
       handlePointUp();
-      //  handlePointUp(e.clientX);
+    
     };
 
     const clearWheelTimeout = () => {
@@ -370,23 +416,36 @@ export const Carousel = forwardRef<
       wheelTimeout = setTimeout(() => {
         handlePointUp();
       }, 200);
-      e.preventDefault();
+
       // e.stopPropagation();
-      if (!isDragging.current) doInitialMeaurements();
+      // if (!isDragging.current) doInitialMeaurements();
+     
       isDragging.current = true;
-      swipeDistance.current += e.deltaX;
-      pan(-1 * e.deltaX);
+      const drag = () => {
+        e.preventDefault();
+        swipeDistance.current += e.deltaX;
+        pan(-1 * e.deltaX);
+      };
+      if (isOverThresold.current) {
+        drag();
+        return;
+      }
+      const direction = detectSwipeDirection(-1 * e.deltaX, -1 * e.deltaY, 1);
+     
+      if (direction === "left" || direction === "right") {
+        e.stopPropagation();
+        isOverThresold.current = true;
+        drag();
+      }
     };
 
     const onKeyUp = (e: KeyboardEvent) => {
-      console.log("key up");
       e.stopPropagation();
       if (e.key === "37") {
       } else if (e.key === "39") {
       }
     };
     const onKeyDown = (e: KeyboardEvent) => {
-      console.log("key down");
       e.stopPropagation();
       if (e.key === "37") {
         panLeft();
@@ -439,7 +498,6 @@ export const Carousel = forwardRef<
     handlePanning,
     handlePointUp,
     panOnHover,
-    doInitialMeaurements,
     pan,
     panLeft,
     panRight,
@@ -477,7 +535,6 @@ export const Carousel = forwardRef<
     });
   }
 
- 
   return (
     <div ref={containerRef} className="carousel carousel-container">
       <motion.div
@@ -493,5 +550,4 @@ export const Carousel = forwardRef<
 
 Carousel.displayName = "Carousel";
 
-
-export default Carousel
+export default Carousel;

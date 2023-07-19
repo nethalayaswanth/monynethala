@@ -5,7 +5,7 @@
 .carousel-wrapper {
   margin-left: auto;
   margin-right: auto;
-  align-items: flex-start;
+  /* align-items: center; */
   display: flex;
   justify-content: flex-start;
 }

@@ -90,7 +90,7 @@ const Sticky = ({
 
       scrollXContainer.current.scrollLeft = scrollX.current;
       scrollYContainer.current.scrollTop = scrollY.current;
-      console.log(newScrollX, maxScrollX.current);
+    
       updateProgress();
     },
     [updateProgress]
@@ -113,7 +113,6 @@ const Sticky = ({
       scrollXContainer.current.scrollLeft = scrollX.current;
       scrollYContainer.current.scrollTop = scrollY.current;
 
-      console.log("y");
       updateProgress();
     },
     [updateProgress]
@@ -135,7 +134,7 @@ const Sticky = ({
   const onScrollY = useCallback(
     async (x: Event) => {
       if (forcedScroll.current) {
-        console.log(`%cy`, "color:orange");
+    
         forcedScroll.current = false;
         return;
       }
@@ -161,7 +160,7 @@ const Sticky = ({
 
   const onScrollX = useCallback(
     async (x: Event) => {
-      console.log(`%cx`, "color:green", forcedScroll.current);
+    
       if (forcedScroll.current) {
         return;
       }
@@ -269,7 +268,7 @@ const Sticky = ({
 
       minScrollY.current = sticky.offsetTop;
       maxScrollY.current = minScrollY.current + contentHeight - screenHeight;
-      console.log(maxScrollX.current, maxScrollY.current, minScrollY.current);
+     
       sticky.style.setProperty("--scrollbar-height", `${scrollbarHeight}px`);
 
       // });

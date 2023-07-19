@@ -1,6 +1,5 @@
 "use client";
 
-import { images } from "@/data/images";
 import React, {
   ReactNode,
   forwardRef,
@@ -9,10 +8,12 @@ import React, {
   useRef,
 } from "react";
 import cssStyles from "./bars.module.css";
+import { ShowCaseData } from "@/data/showcase";
 
 interface Props {
+  
   children?: ReactNode;
-
+ 
   index: number;
   img: String;
   onHover: (index: number) => void;
@@ -56,7 +57,7 @@ const Bar = forwardRef<Ref, Props>(({ index, img, onHover }, ref) => {
 
 Bar.displayName = "Bar";
 
-const Bars = () => {
+const Bars = ({ data }: { data: ShowCaseData }) => {
   const activeIndex = useRef(0);
 
   const nodes = useRef(new Set<HTMLDivElement>([]));
@@ -65,15 +66,18 @@ const Bars = () => {
     nodes.current.add(node);
   }, []);
 
-  const handleHover = useCallback((index: number) => {
+  const handleHover = useCallback((index?: number) => {
     const cards = nodes.current;
 
+    if ((cards.size === 0 || index === activeIndex.current && index!==undefined)) return;
+    if (index === undefined) {
+      activeIndex.current = 0;
+    }else{
+      activeIndex.current =index
+    }
     
-    if (cards.size === 0 || index === activeIndex.current) return;
-    activeIndex.current = index;
     let i = 0;
 
-   
     for (let card of cards) {
       if (i === activeIndex.current) {
         card.classList.add(cssStyles.active);
@@ -86,32 +90,32 @@ const Bars = () => {
   }, []);
 
   useLayoutEffect(() => {
-    if (images.length === 0) return;
-    handleHover(Math.floor(5));
-  }, [handleHover]);
+    if (data.length === 0) return;
+    handleHover();
+  }, [handleHover, data]);
 
   return (
-    <div className={cssStyles.main}>
-      <div className={cssStyles.section}>
-        <div className={cssStyles.flex}>
+    // <div className={cssStyles.main}>
+    //   <div className={cssStyles.section}>
+    //     <div className={cssStyles.flex}>
           <div className={cssStyles.container}>
             <div className={cssStyles.wrapper}>
-              {images.slice(0, 10).map((img, index) => {
+              {data.map(({url}, index) => {
                 return (
                   <Bar
                     ref={setNodes}
                     index={index}
                     key={index}
-                    img={img}
+                    img={url}
                     onHover={handleHover}
                   />
                 );
               })}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

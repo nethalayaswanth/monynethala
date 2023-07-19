@@ -154,7 +154,7 @@ const TechStack = () => {
                   key="title"
                   className="flex flex-row  p-3 md:p-4 h-full w-full line   ease-linear duration-100 "
                 >
-                  <div className="h3 vertical text-center ">{title}</div>
+                  <div className="h3 text-vertical text-center ">{title}</div>
                   <div className="flex flex-row items-start justify-start flex-wrap p-2  ml-2">
                     {data &&
                       data.map(({ name }) => {
@@ -164,7 +164,7 @@ const TechStack = () => {
                             layoutId={title}
                             highlightcolor={getContrastColor(accent)}
                           >
-                            <div className="chip-text">
+                            <div className=" badge-content chip-text">
                               <ScramblingText text={name} />
                             </div>
                           </Badge>

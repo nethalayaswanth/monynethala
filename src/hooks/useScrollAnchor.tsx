@@ -25,15 +25,15 @@ const useScrollToAnchor = ({ onComplete }: { onComplete?: () => void }={}) => {
         const elementPosition = targetElement.offsetLeft;
         
         const currentX = x.current;
-        console.log(currentX, elementPosition);
+       
         if (currentX === elementPosition) return
           animate(currentX, elementPosition, {
             onUpdate: (latest) => {
-              console.log(latest)
+             
               scrollX(latest);
             },
             onComplete: () => {
-              console.log(x.current);
+             
               onCompleteRef.current?.();
             },
             type: "spring",

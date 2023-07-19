@@ -7,7 +7,6 @@ export default function Cover({ name }: { name: string }) {
   const isPresent = useIsPresent();
   const accent = generateRandomHsv();
 
-  console.log(name, isPresent);
   return (
     <motion.div
       className={`fixed top-0 left-0 right-0 bottom-0 z-[1000] `}

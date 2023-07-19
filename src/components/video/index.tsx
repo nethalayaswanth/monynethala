@@ -22,14 +22,14 @@ const Video = ({ src }: Props) => {
   }, []);
   const pauseVideo = useCallback(() => {
     if (videoRef.current) {
-      console.log('pausing')
+    
       setPlaying(false);
       videoRef.current.pause();
     }
   }, []);
 
   const handlePlay = () => {
-    console.log('clcik')
+    
     if (videoRef.current) {
       if (playing) {
         pauseVideo();

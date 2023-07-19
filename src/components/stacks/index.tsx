@@ -16,6 +16,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { docData } from "../landing";
 import cssStyles from "./stack.module.css";
+import { ShowCaseData } from "@/data/showcase";
+import Image from "next/image";
 
 type CarStyle = { zIndex: number; translate: number; scale: number };
 
@@ -94,13 +96,18 @@ const Card = forwardRef<Ref, Props>(
             <div className={`${cssStyles.outer} ${cssStyles.absolute}  `}>
               <div className={`${cssStyles.inner} ${cssStyles.absolute} `}>
                 <div className={`${cssStyles.crop} ${cssStyles.absolute} `}>
-                  <div
+                  <Image
                     className={cssStyles.bg}
                     style={{
-                      backgroundImage: `url(${img})`,
                       backgroundColor: color,
+                      objectFit: "cover",
                     }}
-                  ></div>
+                    src={img}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    // placeholder="blur"
+                  />
                 </div>
               </div>
             </div>
@@ -121,7 +128,7 @@ const Stack = ({
   darkTextColor = "rgb(255,255,255)",
   lightTextColor = "rgb(31,41,55)",
 }: {
-  data: docData[];
+  data: ShowCaseData;
   darkTextColor?: string;
   lightTextColor?: string;
 }) => {
@@ -283,7 +290,7 @@ const Stack = ({
                         className="flex w-full flex-col  items-center"
                       >
                         <div className="text-[1.25rem] text-center font-semibold mt-[32px] mb-[24px] tracking-[-.06em] transition-colors">
-                          {data[active].title}
+                          {data[active].text}
                         </div>
                         <Link
                           href="/images"

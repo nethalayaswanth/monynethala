@@ -1,16 +1,14 @@
 import {
-  ReactNode,
-  ReactElement,
-  ReactFragment,
   Children,
-  isValidElement,
-  cloneElement,
-  FunctionComponent,
   ComponentType,
-  ReactChild,
+  FunctionComponent,
+  ReactElement,
+  ReactNode,
+  cloneElement,
+  isValidElement,
 } from "react";
 
-import { isFragment, isElement } from "react-is";
+import { isFragment } from "react-is";
 
 function getComponentDisplayName(element: ReactElement<any>) {
   const node = element as React.ReactElement<ComponentType<any>>;
@@ -27,15 +25,13 @@ function getComponentDisplayName(element: ReactElement<any>) {
   return displayName;
 }
 
-export function isChildDesiredItem(child: ReactElement,displayName:string) {
-
-
+export function isChildDesiredItem(child: ReactElement, displayName: string) {
   return getComponentDisplayName(child) === displayName;
 }
 
 export function filterChildren(
   children: ReactNode,
-  displayName:string,
+  displayName: string,
   depth: number = 0,
   keys: (string | number)[] = []
 ) {
@@ -68,4 +64,24 @@ export function filterChildren(
 
     []
   );
+}
+
+export function detectSwipeDirection(
+  deltaX: number,
+  deltaY: number,
+  swipeThreshold: number
+) {
+  if (Math.abs(deltaX) >= Math.abs(deltaY)) {
+    if (deltaX > swipeThreshold) {
+      return 'right'
+    } else if (deltaX < -swipeThreshold) {
+      return 'left'
+    }
+  } else {
+    if (deltaY > swipeThreshold) {
+      return 'down'
+    } else if (deltaY < -swipeThreshold) {
+      return 'up'
+    }
+  }
 }

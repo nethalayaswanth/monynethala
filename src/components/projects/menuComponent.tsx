@@ -37,7 +37,7 @@ const Menu = () => {
   return (
     <div
       id="projects"
-    style={{'--accent':color}}
+      style={{ "--accent": color }}
       className={`grid-screen h-screen overflow-auto mr-[200px]`}
     >
       <div className={`flex flex-start `}>
@@ -45,11 +45,10 @@ const Menu = () => {
           className={`flex flex-col justify-between items-start py-[100px] line border-y-0   `}
         >
           {projectsData.map(({ name }, index) => (
-            
             <div
               key={name}
-              className={`h3 vertical  text-center p-3 line border-x-0 ${
-                active ===index? `text-[var(--accent)]` : ""
+              className={`h3 text-vertical  text-center p-3 line border-x-0 ${
+                active === index ? `text-[var(--accent)]` : ""
               }`}
               onClick={() => {
                 setActive(index);

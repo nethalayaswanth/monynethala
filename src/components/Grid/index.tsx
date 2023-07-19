@@ -5,10 +5,9 @@ import { Children, ReactNode, useCallback, useRef } from "react";
 import useBreakpoints from "@/hooks/useBreakPoint";
 import useCursor from "@/hooks/useCursorMove";
 import useIsomorphicLayoutEffect from "@/hooks/useIsomorphicLayout";
-import { generateRandomHsv, mergeRefs } from "@/utils";
+import { mergeRefs } from "@/utils";
 import { stagger, transform, useAnimate } from "framer-motion";
-import { getPosition,breakpoints,rows } from "./utils";
-
+import { breakpoints, getPosition, rows } from "./utils";
 
 const Grid = ({ children }: { children: ReactNode }) => {
   const disabled = useRef<boolean>(false);
@@ -25,22 +24,20 @@ const Grid = ({ children }: { children: ReactNode }) => {
   const handleScroll = useCallback(() => {
     const container = main.current;
     const firstgrid = grids.current.first;
-    if (!firstgrid || !container) return;
-    const y = container.scrollTop;
-
+    if (!firstgrid) return;
+    const y = window.scrollY;
     const gridHeight = firstgrid.clientHeight;
-    const mainHeight = container.scrollHeight;
+    const mainHeight = document.documentElement.scrollHeight;
 
     if (!disabled.current && gridHeight + y >= mainHeight) {
-      // window.scrollTo({ top: 1 });
-      container.scrollTop = 1;
+      window.scrollTo({ top: 1 });
+      // container.scrollTop = 1;
       disabled.current = true;
     } else if (y <= 0 && !disabled.current) {
-      console.log(mainHeight, gridHeight);
-      container.scrollTop = mainHeight - 1 - gridHeight;
-      // window.scrollTo({
-      //   top: mainHeight - 1 - gridHeight,
-      // });
+      // container.scrollTop = mainHeight - 1 - gridHeight;
+      window.scrollTo({
+        top: mainHeight - 1 - gridHeight,
+      });
       disabled.current = true;
     }
     if (disabled.current) {
@@ -50,11 +47,8 @@ const Grid = ({ children }: { children: ReactNode }) => {
     }
 
     const animate = () => {
-      const container = main.current;
-
-      if (!container) return;
-      const y = container.scrollTop;
-      const { clientHeight: height, clientWidth: width } = container;
+      const y = window.scrollY;
+      const { height, width } = window.screen;
       Object.values(grids.current).forEach((grid, index) => {
         if (!grid) return;
 
@@ -87,22 +81,22 @@ const Grid = ({ children }: { children: ReactNode }) => {
   const images = Children.toArray(children);
 
   useIsomorphicLayoutEffect(() => {
-    const container = main.current;
+    // const container = main.current;
 
-    if (!container) return;
+    // if (!container) return;
     handleScroll();
-    container.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => container.removeEventListener("scroll", handleScroll);
+    return () => document.removeEventListener("scroll", handleScroll);
   }, []);
 
   const onMove = useCallback((translate: number) => {
-
     if (typeof window !== "undefined") {
       const container = main.current;
 
       if (!container) return;
-       window.scrollBy({ top: translate });
+      // container.scrollTop += translate;
+      window.scrollBy({ top: translate });
     }
   }, []);
 
@@ -112,30 +106,26 @@ const Grid = ({ children }: { children: ReactNode }) => {
   const [scope, animate] = useAnimate();
 
   useIsomorphicLayoutEffect(() => {
-
-    try{
-       animate(
-      ".grid_item",
-      { opacity: [0, 1] },
-      { delay: stagger(0.1, { from: "center" }), duration: 1, type: "spring" }
-    );
-    animate(0, 200, {
-      onUpdate: (latest) => {
-        const container = main.current;
-        if (!container) return;
-        const scrollBy = transform([0, 100, 200], [0, 200, 0])(latest);
-        // window.scrollBy({
-        //   top: scrollBy,
-        // });
-        container.scrollTop += scrollBy;
-      },
-      type: "spring",
-      duration: 10,
-    })
-    }catch(e){
-      
-    }
-   
+    try {
+      animate(
+        ".grid_item",
+        { opacity: [0, 1] },
+        { delay: stagger(0.1, { from: "center" }), duration: 1, type: "spring" }
+      );
+      animate(0, 200, {
+        onUpdate: (latest) => {
+          const container = main.current;
+          if (!container) return;
+          const scrollBy = transform([0, 100, 200], [0, 200, 0])(latest);
+          window.scrollBy({
+            top: scrollBy,
+          });
+          // container.scrollTop += scrollBy;
+        },
+        type: "spring",
+        duration: 10,
+      });
+    } catch (e) {}
   }, []);
 
   return (
@@ -143,10 +133,11 @@ const Grid = ({ children }: { children: ReactNode }) => {
       <div
         id={"gallery"}
         ref={mergeRefs(main, ref, scope)}
-        className="w-full h-screen overflow-y-scroll"
+        // className="w-full h-screen overflow-y-scroll"
+        className="w-full"
       >
         <div
-          className={`w-full  flex overflow-x-hidden  flex-col items-center relative min-h-[100vh]`}
+          className={`w-full  flex overflow-hidden  flex-col items-center relative min-h-[100vh]`}
         >
           {images ? (
             <>
@@ -175,7 +166,6 @@ const Grid = ({ children }: { children: ReactNode }) => {
                       }}
                       className={" grid_item relative "}
                       style={{
-                       
                         gridColumn: col,
                         gridRow: row,
                       }}
@@ -211,7 +201,6 @@ const Grid = ({ children }: { children: ReactNode }) => {
                       }}
                       className={"grid_item relative "}
                       style={{
-                       
                         gridColumn: col,
                         gridRow: row,
                       }}

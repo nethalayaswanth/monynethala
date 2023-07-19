@@ -10,10 +10,11 @@ import { ProjectsDataType } from "@/data/projects";
 type props = {
   active: boolean;
   index: number;
+  vertical?:boolean
   setActive: Dispatch<SetStateAction<number>>;
 } & ProjectsDataType;
 
-const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
+const ProjectCard = ({ setActive,vertical=false, index, name, active, ...props }: props) => {
   const color = useMemo(() => getcolor(), []);
 
   return (
@@ -21,34 +22,49 @@ const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
       onMouseEnter={() => setActive(index)}
       layout
       style={{ "--accent": color }}
-      className="group flex flex-row h-screen   overflow-hidden"
+      className={`group flex    overflow-hidden ${
+        vertical ? "flex-col" : "flex-row h-screen  "
+      } ${vertical ? "vertical" : ""}`}
     >
-      <motion.div
+      <motion.div 
         layout
-        className={`flex justify-between cursor-pointer items-start p-3 pt-[100px] ${
+        className={`flex  cursor-pointer items-start p-3  ${
           active ? `text-[var(--accent)]` : ""
+        } ${
+          vertical ? "justify-start" : "justify-between items-start pt-[100px]"
         }  `}
       >
-        <div className="h3 vertical text-center ">{name}</div>
+        <div
+          className={`h3  text-center  ${vertical ? "" : "text-vertical "} `}
+        >
+          {name}
+        </div>
       </motion.div>
 
       <AnimatePresence>
         {active && (
           <motion.div
-            className="font-body text-black text-xs mb-3"
+            className="font-body text-xs mb-3"
             key={index}
-            initial={{ width: 0, opacity: 0 }}
+            initial={{
+              ...(vertical ? { height: 0 } : { width: 0 }),
+              opacity: 0,
+            }}
             animate={{
-              width: "auto",
+              ...(vertical ? { height: "auto" } : { width: "auto" }),
               opacity: 1,
             }}
-            exit={{ width: 0, opacity: 0 }}
+            exit={{ ...(vertical ? { height: 0 } : { width: 0 }), opacity: 0 }}
             // transition={{
             //   // x: { type: "spring", stiffness: 300, damping: 30 ,bounce:0},
             //   opacity: { duration: 0.2 },
             // }}
           >
-            <div className="w-[476px] h-full">
+            <div
+              className={`${
+                vertical ? "w-full" : "w-[476px] h-full pt-[100px] flex "
+              }  `}
+            >
               <Content
                 {...{
                   name,
@@ -63,7 +79,9 @@ const ProjectCard = ({ setActive, index, name, active, ...props }: props) => {
         )}
       </AnimatePresence>
 
-      <div className="line h-full  " />
+      <div
+        className={`line  ${vertical ? "w-full border-[white]" : "h-full"} `}
+      />
     </motion.div>
   );
 };

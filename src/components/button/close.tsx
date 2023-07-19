@@ -1,17 +1,25 @@
 "use client";
 
-import Rounded from "./Rounded";
 
-import { useOverlayDispatch } from "@/contexts/overlayContext";
 import { IoMdCloseCircle } from "react-icons/io";
-import { CardProps } from "../card";
+import Card, { CardProps } from "../card";
 
-const Close = ({onClick, ...cardProps }: CardProps) => {
-
+const Close = ({ onClick, className, ...cardProps }: CardProps) => {
   return (
-    <Rounded {...cardProps} >
-      <IoMdCloseCircle size={32} />
-    </Rounded>
+    <Card
+      className={`flex-grow-0 rounded-full ${className ? className : ""} `}
+      style={{}}
+      highlightStyle={{
+        borderRadius: "50%",
+      }}
+      {...cardProps}
+    >
+      <div
+        className={`uppercase  flex flex-row items-center cursor-pointer  font-bold rounded-full border border-solid border-[var(--accent,currentcolor)]  relative z-[2]  select-none transition-colors  `}
+      >
+        <IoMdCloseCircle size={32} />
+      </div>
+    </Card>
   );
 };
 

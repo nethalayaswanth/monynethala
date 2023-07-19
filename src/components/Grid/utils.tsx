@@ -10,7 +10,7 @@ const shuffle = (array: string[][]) => {
 export const breakpoints = {
   sm: 480,
   md: 740,
-  lg: Infinity,
+  lg: Infinity, 
 };
 const sm = [[2], [1], [3], [1, 2], [3], [1], [2, 3], [1]];
 const md = [[3], [1, 2], [3], [4, 2], [1], [4], [2, 3], [4]];
