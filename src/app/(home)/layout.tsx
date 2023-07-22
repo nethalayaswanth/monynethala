@@ -1,4 +1,6 @@
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+ 
 
 import InteractionDetector from "@/components/interactionDetector.js";
 import "../globals.css";
@@ -37,6 +39,7 @@ export default function RootLayout({
             {/* {children} */}
           </div>
         </InteractionDetector>
+        <Analytics />
       </body>
     </html>
   );
