@@ -41,7 +41,7 @@ const ContentItem = (data: ContentType & { color?: string }) => {
           className={`$ relative flex justify-center items-center h-full  `}
         >
           <div
-            style={{ aspectRatio }}
+            style={{ aspectRatio, backgroundColor: color }}
             data-portrait={portrait}
             className="content-img relative"
           >
